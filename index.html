@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сайт о карточных играх (с примером игры в 21 - блекджек)</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f0f0f0; }
+        header, footer { text-align: center; margin-bottom: 20px; }
+        nav ul { list-style-type: none; padding: 0; }
+        nav ul li { display: inline; margin: 0 10px; }
+        nav ul li a { text-decoration: none; color: blue; }
+        .content { margin-bottom: 20px; display: none; }
+        .visible { display: block; }
+        #gameControls { display: none; }
+        /* Snowflakes styling with added shadow for visibility */
+        .snowflake {
+            color: #FFF; /* White color for snowflakes */
+            font-size: 1em;
+            position: fixed;
+            z-index: 9999;
+            text-shadow: 0 0 5px #000; /* Add shadow to make it visible on light backgrounds */
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Сайт о карточных играх (с примером игры в 21 - блекджек)</h1>
+    <h1>------------------------------------------------------</h1>
+    <button id="toggleSnow">Сгенерировать снег</button>
+</header>
+
+<nav>
+    <ul>
+        <li><a href="javascript:void(0);" onclick="showPage('история')">| История карт |</a></li>
+        <li><a href="javascript:void(0);" onclick="showPage('правила блекджека')">| Правила блекджека |</a></li>
+        <li><a href="javascript:void(0);" onclick="showPage('текущее время')">| Текущее дата-время |</a></li>
+        <li><a href="javascript:void(0);" onclick="showPage('материалы')">| Материалы |</a></li>
+        <li><a href="javascript:void(0);" onclick="showPage('игра в 21 (блекджек)')">| Игра в блекджек (21) |</a></li>
+    </ul>
+</nav>
+
+<div id="история" class="content visible">
+    <h2>История Карточных игр</h2>
+    <p>Карточные игры были популярной формой развлечения на протяжении веков. Считается, что они были изобретены в Китае в IX веке, откуда распространились в разные уголки мира и эволюционировали на протяжении всего пути. Игра в 21, также известная как Блэкджек, имеет свои корни во французской игре Vingt-et-Un.</p>
+</div>
+
+<div id="правила блекджека" class="content">
+    <h2>Правила игры в блекджек (21)</h2>
+    <p> Цель игры в блекджек (21) - приблизиться к сумме 21 как можно ближе, не превысив её, при этом иметь сумму больше, чем у дилера. Игрокам в начале раздаются две карты, после чего они могут выбрать "Взять" (Hit) (взять ещё одну карту) или "Остаться" (Stand) (сохранить текущую сумму). Тузы могут считаться за 1 или 11, а картинки (король, дама, валет) ценятся в 10.</p>
+</div>
+
+
+<div id="текущее время" class="content">
+    <h2>Текущая дата и время</h2>
+    <p id="currentTime">---Тут будет текущее время---</p>
+</div>
+
+<script>
+function updateDateTime() {
+    var now = new Date();
+    var dateString = now.toLocaleDateString('ru-RU', {
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric', 
+        hour: '2-digit', 
+        minute: '2-digit', 
+        second: '2-digit'
+    });
+    document.getElementById('currentTime').innerHTML = dateString;
+}
+
+updateDateTime(); // Update date and time on load
+setInterval(updateDateTime, 1000); // Update date and time every second
+</script>
+
+
+<div id="материалы" class="content">
+    <h2> Ссылки на профили гитхаба создателя + на материалы использованные при разработке </h2>
+    <p>Страницы созданы Елизоветой Мельниковой. Мой гитхаб профиль: https://github.com/ChaykTer </p>
+    <p>Страница разработчика у которого заимствован код для игры для 5-ей страницы сайта: https://github.com/Trezoid/ </p>
+    <p>Страница знакомого разработчика который помог мне разобраться как написать код сайта и заставил писать ТЗ: https://github.com/EnergyDashClarko/ </p>
+</div>
+
+<div id="игра в 21 (блекджек)" class="content">
+    <h2>Игра в блекджек</h2>
+    <p> (Игра не моя. Код заимствован от другого разработчика, так как я не поняла как сделать свой. Ссылка на профиль разработчика игры в материалах) </p>
+    <p> (Для старта игры нажать на кнопку "Start") </p>
+    <button id="startGame">Start Game</button>
+    <div id="gameArea"></div>
+</div>
+
+<footer>
+    <p>----------------------------------------------------------------------------------------------------</p>
+    <p>Сайт создан Елизоветой Мельниковой, студентом Коледжа при Российском университете Кооперации, для экзамена по предмету "Разработка кода информационных систем", февраль 2024 года</p>
+
+</footer>
+<script>
+function showPage(pageId) {
+    var contents = document.getElementsByClassName('content');
+    for (var i = 0; i < contents.length; i++) {
+        contents[i].style.display = 'none';
+    }
+    document.getElementById(pageId).style.display = 'block';
+}
+
+document.getElementById('startGame').addEventListener('click', function() {
+    startGame();
+});
+
+function createSnowflake() {
+    var snowflake = document.createElement('div');
+    snowflake.innerHTML = '&#10052;';
+    snowflake.style.cssText = 'position: fixed; top: -25px; z-index: 9999; color: #FFF; text-shadow: 0 0 5px #000;';
+    snowflake.style.left = Math.random() * window.innerWidth + 'px';
+    snowflake.style.fontSize = Math.random() * (20 - 10) + 10 + 'px';
+    document.body.appendChild(snowflake);
+
+    // Animate snowflake falling
+    var fallSpeed = (Math.random() * 5000) + 3000; // Falling speed between 3-8 seconds
+    snowflake.style.transition = `top ${fallSpeed}ms linear`;
+    setTimeout(() => snowflake.style.top = window.innerHeight + 'px', 30); // Start falling animation shortly after creation
+
+    // Remove snowflake after it has fallen to the bottom
+    setTimeout(() => {
+        snowflake.remove();
+    }, fallSpeed + 100); // Give a little extra time to ensure the animation completes
+}
+
+var snowingInterval;
+document.getElementById('toggleSnow').addEventListener('click', function() {
+    if (!snowingInterval) {
+        snowingInterval = setInterval(createSnowflake, 200);
+    } else {
+        clearInterval(snowingInterval);
+        snowingInterval = null;
+    }
+});
+
+// Game functions (placeholder for brevity)
+
+    function startGame() {
+        var gameArea = document.getElementById('gameArea');
+        gameArea.innerHTML = ''; // Clear previous game area
+        var cards = drawTwo();
+        gameArea.innerHTML = 'You drew ' + cards[0] + ' and ' + cards[1] + ', giving you a current score of ' + cardsTotal(cards) + '<br>';
+
+        updateGameArea(cards);
+    }
+
+    function hit(cards) {
+        var newCard = drawCard();
+        cards.push(newCard);
+        if (cardsTotal(cards) > 21) {
+            updateGameArea(cards, true);
+        } else {
+            updateGameArea(cards);
+        }
+    }
+
+    function stand(cards) {
+        var gameArea = document.getElementById('gameArea');
+        gameArea.innerHTML += 'Your final score is ' + cardsTotal(cards) + '.<br>';
+        // Implement any logic for the dealer to play or finalize the game here
+    }
+
+    function drawCard() {
+        var card = Math.floor(Math.random() * 13) + 1;
+        if (card > 10) {
+            card = 10; // Face cards are worth 10
+        } else if (card === 1) {
+            card = 11; // Ace, potentially worth 11
+        }
+        return card;
+    }
+
+    function drawTwo() {
+        return [drawCard(), drawCard()];
+    }
+
+    function cardsTotal(cards) {
+        var total = cards.reduce((acc, card) => acc + card, 0);
+        // Adjust for Aces if total is over 21
+        cards.forEach(card => {
+            if (card === 11 && total > 21) {
+                total -= 10; // Convert Ace from 11 to 1
+            }
+        });
+        return total;
+    }
+
+    function updateGameArea(cards, bust = false) {
+        var gameArea = document.getElementById('gameArea');
+        gameArea.innerHTML = 'Your cards: ' + cards.join(', ') + ' for a total of ' + cardsTotal(cards) + '<br>';
+        if (bust) {
+            gameArea.innerHTML += 'Bust! You have over 21.<br>';
+        } else {
+            gameArea.innerHTML += '<button id="hit">Hit</button><button id="stand">Stand</button>';
+            document.getElementById('hit').addEventListener('click', function() {
+                hit(cards);
+            });
+            document.getElementById('stand').addEventListener('click', function() {
+                stand(cards);
+            });
+        }
+    }
+
+
+</script>
+</body>
+</html>
